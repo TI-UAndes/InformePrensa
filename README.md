@@ -6,7 +6,7 @@ chilenos, dado un rango de fechas. Ver el diseño completo en
 
 ## Requisitos
 
-- Node >=18
+- Node >=20 (lo exigen `vite@8`, `cheerio@1.2` y `vitest@4`)
 
 ## Backend
 
