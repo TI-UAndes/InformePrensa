@@ -11,11 +11,13 @@ import type { MediaConfig } from "./types.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const media: MediaConfig[] = JSON.parse(fs.readFileSync(path.join(__dirname, "config/media.json"), "utf-8"));
 
+const FETCH_TIMEOUT_MS = 10_000;
+
 const app = createApp(buildReport, media, {
   discoverSitemapRss: discoverFromSitemapOrRss,
   discoverGoogleCse: discoverFromGoogleCse,
   fetchHtml: async (url: string) => {
-    const response = await fetch(url);
+    const response = await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
     return response.text();
   },
 });
