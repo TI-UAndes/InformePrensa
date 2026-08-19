@@ -10,6 +10,13 @@ import { extractArticle } from "./articleExtractor.js";
 
 const CATEGORY_ORDER: Category[] = ["Sitio Web", "Televisión", "Prensa Escrita", "Radio"];
 
+/**
+ * Upper bound on how many candidate URLs are downloaded per medium. A real news
+ * sitemap can list hundreds of URLs for a single day, and each candidate costs
+ * one sequential HTTP request.
+ */
+const MAX_CANDIDATES_PER_MEDIUM = 30;
+
 export interface ReportDeps {
   discoverSitemapRss: (domain: string, from: string, to: string) => Promise<DiscoveredUrl[]>;
   discoverGoogleCse: (domain: string, from: string, to: string) => Promise<DiscoveredUrl[]>;
@@ -34,17 +41,22 @@ async function collectMediaItems(
       deps.discoverSitemapRss(media.domain, from, to),
       deps.discoverGoogleCse(media.domain, from, to),
     ]);
-  } catch {
+  } catch (error) {
+    console.warn(
+      `[${media.name}] discovery failed: ${error instanceof Error ? error.message : String(error)}`
+    );
     return { items: [], error: { medio: media.name, motivo: "no se pudo consultar el medio" } };
   }
 
   const seen = new Set<string>();
-  const candidates = [...sitemapResults, ...cseResults].filter((entry) => {
-    const key = normalizeUrl(entry.url);
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+  const candidates = [...sitemapResults, ...cseResults]
+    .filter((entry) => {
+      const key = normalizeUrl(entry.url);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, MAX_CANDIDATES_PER_MEDIUM);
 
   const items: ReportItem[] = [];
   for (const candidate of candidates) {
@@ -56,6 +68,10 @@ async function collectMediaItems(
     }
     const extracted = extractArticle(html, candidate.discoveredDate);
     if (!extracted.matched) continue;
+    // `extracted.fecha` comes from the article itself (JSON-LD `datePublished`),
+    // which can differ from the sitemap `lastmod` used to discover it, so the
+    // real publication date has to be re-checked against the requested range.
+    if (extracted.fecha < from || extracted.fecha > to) continue;
     items.push({
       medio: media.name,
       titulo: extracted.titulo,
@@ -78,13 +94,23 @@ export async function buildReport(
 
   const itemsByCategory = new Map<Category, ReportItem[]>();
   const errors: ReportError[] = [];
+  // Global dedup: two media configs can share a domain (e.g. a site and its
+  // radio station), so the same article must not be reported under both. Applied
+  // here, in `media` array order, so the result never depends on race timing.
+  const includedUrls = new Set<string>();
 
   media.forEach((entry, index) => {
     const { items, error } = results[index];
     if (error) errors.push(error);
-    if (items.length === 0) return;
+    const uniqueItems = items.filter((item) => {
+      const key = normalizeUrl(item.url);
+      if (includedUrls.has(key)) return false;
+      includedUrls.add(key);
+      return true;
+    });
+    if (uniqueItems.length === 0) return;
     const existing = itemsByCategory.get(entry.category) ?? [];
-    itemsByCategory.set(entry.category, [...existing, ...items]);
+    itemsByCategory.set(entry.category, [...existing, ...uniqueItems]);
   });
 
   const categories = CATEGORY_ORDER.filter((category) => itemsByCategory.has(category)).map((category) => ({
