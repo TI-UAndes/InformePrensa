@@ -15,7 +15,7 @@ const sampleReport: ReportResponse = {
 
 describe("fetchReport", () => {
   it("calls the backend with the given date range and returns the parsed report", async () => {
-    const fetchMock = vi.fn(async () => ({
+    const fetchMock = vi.fn(async (_input: string) => ({
       ok: true,
       json: async () => sampleReport,
     }));
@@ -24,7 +24,7 @@ describe("fetchReport", () => {
     const result = await fetchReport("2026-08-01", "2026-08-19");
 
     expect(result).toEqual(sampleReport);
-    const calledUrl = new URL(fetchMock.mock.calls[0][0] as string);
+    const calledUrl = new URL(fetchMock.mock.calls[0][0]);
     expect(calledUrl.origin).toBe("http://localhost:3001");
     expect(calledUrl.pathname).toBe("/api/report");
     expect(calledUrl.searchParams.get("from")).toBe("2026-08-01");
