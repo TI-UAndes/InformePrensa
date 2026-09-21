@@ -1,0 +1,677 @@
+<title>Ampliación Informe UANDES</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ee;
+    --panel: #ffffff;
+    --ink: #221f1d;
+    --muted: #6b625a;
+    --line: #ddd5cb;
+    --red: #cb0000;
+    --red-deep: #7a0000;
+    --status-ready-bg: #e7f1ea;
+    --status-ready-fg: #2f6f4f;
+    --status-review-bg: #f7ecd8;
+    --status-review-fg: #8a5d10;
+    --status-blocked-bg: #f5e4e0;
+    --status-blocked-fg: #8a3b2a;
+    --shadow: 0 1px 2px rgba(34,31,29,0.04), 0 8px 24px rgba(34,31,29,0.06);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1b1816;
+      --panel: #242019;
+      --ink: #f1ece4;
+      --muted: #b4a99c;
+      --line: #3a352e;
+      --red: #ff5b4d;
+      --red-deep: #ff8a7d;
+      --status-ready-bg: #1d3327;
+      --status-ready-fg: #7fd3a4;
+      --status-review-bg: #3a2f16;
+      --status-review-fg: #e3bb6a;
+      --status-blocked-bg: #3a231e;
+      --status-blocked-fg: #e79a8a;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #1b1816;
+    --panel: #242019;
+    --ink: #f1ece4;
+    --muted: #b4a99c;
+    --line: #3a352e;
+    --red: #ff5b4d;
+    --red-deep: #ff8a7d;
+    --status-ready-bg: #1d3327;
+    --status-ready-fg: #7fd3a4;
+    --status-review-bg: #3a2f16;
+    --status-review-fg: #e3bb6a;
+    --status-blocked-bg: #3a231e;
+    --status-blocked-fg: #e79a8a;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Source Sans 3", -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.6;
+    padding: 0 20px;
+  }
+
+  main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding-block: 48px 96px;
+  }
+
+  .wide {
+    max-width: 920px;
+    margin-inline: auto;
+  }
+
+  h1, h2, h3 {
+    font-family: "Fraunces", Georgia, serif;
+    text-wrap: balance;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 600;
+  }
+
+  header.doc-header {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-bottom: 32px;
+    margin-bottom: 40px;
+    border-bottom: 2px solid var(--line);
+  }
+
+  header.doc-header h1 {
+    font-size: clamp(1.7rem, 1.2rem + 2vw, 2.5rem);
+    font-weight: 600;
+  }
+
+  .doc-sub {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 62ch;
+  }
+
+  .doc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  section {
+    margin-bottom: 56px;
+  }
+
+  section > .eyebrow {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  section h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+
+  section p {
+    margin: 0 0 14px;
+    max-width: 68ch;
+  }
+
+  section p.lede {
+    font-size: 1.08rem;
+    color: var(--muted);
+  }
+
+  .stat-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 20px 0 28px;
+  }
+
+  .stat {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 20px;
+    box-shadow: var(--shadow);
+    flex: 1 1 160px;
+  }
+
+  .stat .value {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: var(--red);
+    display: block;
+  }
+
+  .stat .label {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  blockquote {
+    margin: 20px 0;
+    padding: 18px 22px;
+    background: var(--panel);
+    border-left: 3px solid var(--red);
+    border-radius: 0 10px 10px 0;
+    box-shadow: var(--shadow);
+    font-style: italic;
+    max-width: 68ch;
+  }
+
+  blockquote cite {
+    display: block;
+    margin-top: 8px;
+    font-style: normal;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .callout {
+    background: var(--status-review-bg);
+    color: var(--status-review-fg);
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: 0.92rem;
+    max-width: 68ch;
+    margin: 4px 0 24px;
+  }
+
+  .callout strong { color: inherit; }
+
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    background: var(--panel);
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 480px;
+    font-size: 0.9rem;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  thead th {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: color-mix(in srgb, var(--panel) 88%, var(--ink) 4%);
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  td.count {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .media-cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+
+  .media-cols > div {
+    padding: 16px 18px;
+    border-right: 1px solid var(--line);
+  }
+
+  .media-cols > div:last-child { border-right: none; }
+
+  .media-cols h3 {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .media-cols .n {
+    color: var(--red);
+    font-weight: 700;
+  }
+
+  .media-cols ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.86rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .media-cols li.flag::after {
+    content: " ⓘ";
+    color: var(--status-review-fg);
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .pill.ready { background: var(--status-ready-bg); color: var(--status-ready-fg); }
+  .pill.review { background: var(--status-review-bg); color: var(--status-review-fg); }
+  .pill.blocked { background: var(--status-blocked-bg); color: var(--status-blocked-fg); }
+
+  code {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.85em;
+    background: color-mix(in srgb, var(--panel) 80%, var(--ink) 6%);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+
+  ol.phases {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  ol.phases li {
+    display: flex;
+    gap: 16px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+  }
+
+  ol.phases .num {
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 700;
+    color: var(--red);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    width: 2ch;
+  }
+
+  ol.phases h4 {
+    margin: 0 0 4px;
+    font-family: "Source Sans 3", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  ol.phases p { margin: 0; font-size: 0.9rem; color: var(--muted); max-width: none; }
+
+  .risk-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .risk-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--status-blocked-fg);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+  }
+
+  .risk-card h4 {
+    margin: 0 0 6px;
+    font-size: 0.92rem;
+  }
+
+  .risk-card p { margin: 0; font-size: 0.85rem; color: var(--muted); max-width: none; }
+
+  footer.doc-footer {
+    border-top: 2px solid var(--line);
+    padding-top: 20px;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 720px) {
+    .media-cols { grid-template-columns: 1fr; }
+    .media-cols > div { border-right: none; border-bottom: 1px solid var(--line); }
+    .media-cols > div:last-child { border-bottom: none; }
+    .risk-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<main>
+
+  <header class="doc-header">
+    <span class="eyebrow">Propuesta de desarrollo</span>
+    <h1>Ampliar el Informe de Prensa UANDES de 7 a ~45 medios</h1>
+    <p class="doc-sub">
+      Qué implica sumar televisión, radio y prensa escrita al monitoreo, qué reveló el
+      informe mensual real de referencia, y qué datos externos (planta docente, universidades
+      competidoras) tienen que llegar antes de poder replicarlo por completo.
+    </p>
+    <div class="doc-meta">
+      <span>16 de septiembre de 2026</span>
+      <span>Preparado por Claude · a partir de la lista de medios entregada y el informe mensual real (ncdata.cl)</span>
+    </div>
+  </header>
+
+  <section>
+    <span class="eyebrow">01 — Punto de partida</span>
+    <h2>Lo que existe hoy</h2>
+    <p class="lede">
+      El sistema actual busca menciones de "Universidad de los Andes" / "UANDES" en 7 medios
+      chilenos (sitios web, TV, prensa escrita, radio), usando sitemap/RSS + una búsqueda
+      complementaria con Google Custom Search, y arma un único informe: "UANDES en los medios".
+    </p>
+    <div class="stat-row">
+      <div class="stat"><span class="value">07</span><span class="label">medios configurados hoy</span></div>
+      <div class="stat"><span class="value">01</span><span class="label">sección de informe (UANDES en los medios)</span></div>
+      <div class="stat"><span class="value">50</span><span class="label">tests automatizados backend + frontend</span></div>
+    </div>
+    <p>
+      La arquitectura ya resuelve lo difícil de raíz: descubre notas por sitemap, cae a
+      <code>robots.txt</code> cuando el sitemap no está en la ruta habitual, descarta páginas
+      que no son XML real, y aísla la falla de un medio sin tumbar el resto del informe. Esa base
+      es la que se pone a prueba en este documento con medios nuevos.
+    </p>
+  </section>
+
+  <section>
+    <span class="eyebrow">02 — Referencia real</span>
+    <h2>Lo que reveló el informe mensual (ncdata.cl)</h2>
+    <p class="lede">
+      El informe real que reciben hoy no es una lista plana de menciones — está armado en
+      tres secciones distintas, y cada nota trae un extracto y el nombre del académico citado.
+    </p>
+    <div class="table-wrap" style="margin-bottom:20px;">
+      <table style="min-width:auto;">
+        <thead><tr><th>Sección</th><th>Qué agrupa</th><th>¿La cubrimos hoy?</th></tr></thead>
+        <tbody>
+          <tr><td><strong>UANDES en los medios</strong></td><td>Apariciones directas de la universidad</td><td><span class="pill ready">Sí, parcial</span></td></tr>
+          <tr><td><strong>Educación superior</strong></td><td>Noticias del sector, sin filtrar por universidad</td><td><span class="pill blocked">No</span></td></tr>
+          <tr><td><strong>Competencia</strong></td><td>Menciones de universidades competidoras</td><td><span class="pill blocked">No</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <blockquote>
+      "Andrés Glasinovic, médico familiar y académico de la Facultad de Medicina de la
+      Universidad de los Andes (Uandes), explica que…"
+      <cite>El Martutino — miércoles 02 de septiembre del 2026</cite>
+    </blockquote>
+    <p>
+      Esa nota real muestra dos capacidades que hoy no tenemos: un <strong>extracto</strong>
+      de la nota (no solo título + fecha), y la <strong>atribución del académico</strong>
+      citado — no del periodista que firma la nota.
+    </p>
+  </section>
+
+  <section>
+    <span class="eyebrow">03 — Alcance propuesto</span>
+    <h2>Los medios a incorporar</h2>
+    <p class="lede">
+      De la lista que compartiste: <strong>10 canales de TV, 22 radios y 14 medios
+      escritos/web</strong> — un salto de 7 a <strong>~45 medios</strong> (uno de los catorce,
+      "DF", aparece dos veces en la lista original; vale la pena confirmar si son dos productos
+      distintos de Diario Financiero o un duplicado).
+    </p>
+    <div class="stat-row">
+      <div class="stat"><span class="value">7 → 45</span><span class="label">medios monitoreados (+540%)</span></div>
+    </div>
+    <div class="table-wrap">
+      <div class="media-cols">
+        <div>
+          <h3>Televisión <span class="n">(10)</span></h3>
+          <ul>
+            <li>Canal 13</li><li>T13 en vivo</li><li>CHV</li><li>CHV Noticias</li>
+            <li>TVN</li><li>24 Horas</li><li>Mega</li><li>Meganoticias</li>
+            <li>CNN Chile</li><li>Canal 9</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Radios <span class="n">(22)</span></h3>
+          <ul>
+            <li>Imagina</li><li>Concierto</li><li>El Conquistador</li><li>Duna</li>
+            <li>ADN</li><li>Agricultura</li><li>La Clave</li><li>Cooperativa</li>
+            <li>Universo</li><li>Rock and Pop</li><li>María</li><li>La Metro</li>
+            <li>USACH</li><li>Bío Bío</li><li>Infinita</li><li>Pauta</li>
+            <li>U de Chile</li><li>Tele13 Radio</li><li>Sonar</li><li>FM Dos</li>
+            <li class="flag" title="Verificar si corresponde a una radio institucional propia">Carabineros</li>
+            <li class="flag" title="Nombre de marca ambiguo, verificar dominio real">13C</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Diario / web <span class="n">(14)</span></h3>
+          <ul>
+            <li>Emol</li><li>La Segunda</li><li>La Tercera</li><li>El Mercurio</li>
+            <li>El Dínamo</li><li>DF</li>
+            <li class="flag" title="Verificar cobertura para regiones — puede requerir un dominio propio por medio local">El Día Coquimbo</li>
+            <li class="flag" title="Verificar cobertura para regiones — puede requerir un dominio propio por medio local">El Sur</li>
+            <li>The Clinic</li>
+            <li class="flag" title="Aparece dos veces en la lista original — confirmar si es un producto distinto">DF</li>
+            <li>El Mercurio Inversiones</li><li>El Mercurio Legal</li>
+            <li class="flag" title="Verificar cobertura para regiones — puede requerir un dominio propio por medio local">Estrella Concepción</li>
+            <li>Ex Ante</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">04 — Evidencia técnica</span>
+    <h2>Factibilidad verificada hoy, en vivo</h2>
+    <p class="lede">
+      En vez de suponer, probé 15 de los 45 medios contra el pipeline que ya existe
+      (sitemap directo → <code>robots.txt</code> → hallazgo del sitemap real). Este es el
+      resultado real, no una estimación.
+    </p>
+    <div class="stat-row">
+      <div class="stat"><span class="value">11/15</span><span class="label">listos, sin código nuevo</span></div>
+      <div class="stat"><span class="value">2/15</span><span class="label">bloquean el acceso automatizado</span></div>
+      <div class="stat"><span class="value">2/15</span><span class="label">necesitan investigar el dominio</span></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Medio</th><th>Dominio probado</th><th>Estado</th><th>Nota</th></tr></thead>
+        <tbody>
+          <tr><td>24 Horas</td><td><code>24horas.cl</code></td><td><span class="pill ready">Listo</span></td><td>Sitemap real vía robots.txt</td></tr>
+          <tr><td>TVN</td><td><code>tvn.cl</code></td><td><span class="pill ready">Listo</span></td><td>Sitemap real vía robots.txt</td></tr>
+          <tr><td>Mega</td><td><code>mega.cl</code></td><td><span class="pill ready">Listo</span></td><td>Sitemap dedicado de noticias</td></tr>
+          <tr><td>CNN Chile</td><td><code>cnnchile.com</code></td><td><span class="pill ready">Listo</span></td><td>Sitemap real vía robots.txt</td></tr>
+          <tr><td>Cooperativa</td><td><code>cooperativa.cl</code></td><td><span class="pill ready">Listo</span></td><td>Sitemap real vía robots.txt</td></tr>
+          <tr><td>Duna</td><td><code>duna.cl</code></td><td><span class="pill ready">Listo</span></td><td>Sitemap en la ruta estándar</td></tr>
+          <tr><td>Pauta</td><td><code>pauta.cl</code></td><td><span class="pill ready">Listo</span></td><td>Sitemap en la ruta estándar</td></tr>
+          <tr><td>Diario Financiero</td><td><code>df.cl</code></td><td><span class="pill ready">Listo</span></td><td>Sitemap real vía robots.txt</td></tr>
+          <tr><td>El Dínamo</td><td><code>eldinamo.cl</code></td><td><span class="pill ready">Listo</span></td><td>Sitemap real vía robots.txt</td></tr>
+          <tr><td>La Tercera</td><td><code>latercera.com</code></td><td><span class="pill ready">Listo</span></td><td>Ya configurado y en uso</td></tr>
+          <tr><td>Bío Bío</td><td><code>biobiochile.cl</code></td><td><span class="pill ready">Listo</span></td><td>Ya configurado y en uso</td></tr>
+          <tr><td>ADN</td><td><code>adn.cl</code></td><td><span class="pill review">Revisar</span></td><td>Sin sitemap declarado en robots.txt</td></tr>
+          <tr><td>El Mercurio</td><td><code>elmercurio.com</code></td><td><span class="pill review">Revisar</span></td><td>El dominio real de noticias es <code>emol.com</code>, ya en uso</td></tr>
+          <tr><td>The Clinic</td><td><code>theclinic.cl</code></td><td><span class="pill blocked">Bloqueado</span></td><td>Rechaza la solicitud automatizada (protección anti-bot)</td></tr>
+          <tr><td>Ex Ante</td><td><code>ex-ante.cl</code></td><td><span class="pill blocked">Bloqueado</span></td><td>Dominio real lleva guion; también rechaza la solicitud automatizada</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      El patrón que importa: la arquitectura construida para 7 medios <strong>generaliza casi gratis</strong>
+      a decenas más — el costo real no es escribir más código de scraping, es investigar el dominio
+      correcto de cada medio y decidir qué hacer con los que bloquean el acceso automatizado
+      (necesitarían renderizar con un navegador real, no una simple solicitud HTTP).
+      Quedan 30 medios sin probar; el mismo chequeo se puede correr sobre el resto en minutos.
+    </p>
+  </section>
+
+  <section>
+    <span class="eyebrow">05 — Dato pendiente</span>
+    <h2>Planta docente: por qué la necesitamos</h2>
+    <p class="lede">
+      La nota real de referencia no dice solo "Universidad de los Andes" — nombra al académico
+      y su facultad. Para replicar eso necesitamos un listado de la planta docente, por dos razones:
+    </p>
+    <div class="risk-grid" style="margin-bottom:20px;">
+      <div class="risk-card">
+        <h4>Mejor detección</h4>
+        <p>Buscar también por el nombre propio de cada académico encuentra notas que citan
+        a la persona sin repetir "Universidad de los Andes" en el texto.</p>
+      </div>
+      <div class="risk-card">
+        <h4>Atribución correcta</h4>
+        <p>Poder mostrar "académico citado: Fulano de Tal" en cada nota, en vez de dejar ese
+        campo vacío o mostrar al periodista que firma la nota.</p>
+      </div>
+    </div>
+    <div class="callout">
+      <strong>Estas filas son un ejemplo del formato, no personas reales.</strong> El listado
+      real (nombre, facultad, cargo) tiene que entregarlo Dirección de Comunicaciones o RR.HH. —
+      no es un dato que se pueda inventar ni deducir del sitio de la universidad con confianza.
+    </div>
+    <div class="table-wrap">
+      <table style="min-width:auto;">
+        <thead><tr><th>Nombre</th><th>Facultad</th><th>Cargo</th></tr></thead>
+        <tbody>
+          <tr><td>Académico/a 1 <em style="color:var(--muted)">(ejemplo)</em></td><td>Facultad de Medicina</td><td>Profesor/a Titular</td></tr>
+          <tr><td>Académico/a 2 <em style="color:var(--muted)">(ejemplo)</em></td><td>Facultad de Derecho</td><td>Profesor/a Asociado/a</td></tr>
+          <tr><td>Académico/a 3 <em style="color:var(--muted)">(ejemplo)</em></td><td>Facultad de Gobierno</td><td>Investigador/a</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">06 — Alcance del informe</span>
+    <h2>Qué necesita cada sección nueva</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Sección</th><th>Lógica de búsqueda</th><th>Dato externo que falta</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>UANDES en los medios</strong></td>
+            <td>La actual (nombre + sigla), ahora sobre ~45 medios</td>
+            <td>Planta docente, para la atribución</td>
+          </tr>
+          <tr>
+            <td><strong>Educación superior</strong></td>
+            <td>Palabras clave del sector ("educación superior", "matrícula", "CRUCH"), sin filtrar por universidad</td>
+            <td>Ninguno — es un ajuste de la lógica de búsqueda</td>
+          </tr>
+          <tr>
+            <td><strong>Competencia</strong></td>
+            <td>Igual que hoy, pero buscando el nombre de cada universidad competidora</td>
+            <td>Listado de universidades a vigilar — mismo tipo de dependencia que la planta docente</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">07 — Ruta propuesta</span>
+    <h2>Fases</h2>
+    <ol class="phases">
+      <li>
+        <span class="num">1</span>
+        <div>
+          <h4>Corregir y sumar lo ya verificado</h4>
+          <p>Arreglar el dominio de El Mercurio y sumar los 11 medios confirmados hoy (24 Horas, TVN, Mega, CNN Chile, Cooperativa, Duna, Pauta, DF, El Dínamo). Cero desarrollo nuevo, solo configuración.</p>
+        </div>
+      </li>
+      <li>
+        <span class="num">2</span>
+        <div>
+          <h4>Auditar el resto de la lista</h4>
+          <p>Correr el mismo chequeo sobre los 30 medios restantes y decidir, caso por caso, si vale la pena resolver los que bloquean el acceso automatizado (The Clinic, Ex Ante y los que aparezcan) con una solución de navegador real.</p>
+        </div>
+      </li>
+      <li>
+        <span class="num">3</span>
+        <div>
+          <h4>Incorporar planta docente y competidores</h4>
+          <p>Una vez que Dirección de Comunicaciones entregue ambos listados, habilitar la atribución por académico y las secciones "Educación superior" y "Competencia".</p>
+        </div>
+      </li>
+      <li>
+        <span class="num">4</span>
+        <div>
+          <h4>Extracto automático por nota</h4>
+          <p>Agregar un resumen corto de cada artículo, como en el informe real, en vez de solo título y fecha.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">08 — A decidir</span>
+    <h2>Riesgos y preguntas abiertas</h2>
+    <div class="risk-grid">
+      <div class="risk-card">
+        <h4>Cuota de Google Custom Search</h4>
+        <p>La cuota gratis es 100 consultas/día. Con ~45 medios, y más si se busca también por nombre de cada académico, se agota rápido — hay que definir presupuesto o acotar el uso.</p>
+      </div>
+      <div class="risk-card">
+        <h4>Sitios con protección anti-bot</h4>
+        <p>The Clinic y Ex Ante ya rechazaron la solicitud automatizada en la prueba de hoy. Resolverlo implica una solución de navegador real, más compleja y más lenta que el resto del pipeline.</p>
+      </div>
+      <div class="risk-card">
+        <h4>Mantención de ~45 configuraciones</h4>
+        <p>Cada medio puede cambiar de dominio o de estructura sin aviso (como pasó con El Mercurio). Pasar de 7 a 45 medios multiplica ese trabajo de mantención por seis.</p>
+      </div>
+      <div class="risk-card">
+        <h4>Dependencia de datos externos</h4>
+        <p>Sin el listado de planta docente y de universidades competidoras, dos de las tres secciones del informe real no se pueden construir, sin importar cuánto avance el resto del desarrollo.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="doc-footer">
+    Base de referencia: pipeline actual del backend Informe de Prensa UANDES (sitemap/RSS +
+    fallback a robots.txt + Google Custom Search) y el informe mensual real consultado el
+    16 de septiembre de 2026.
+  </footer>
+
+</main>
