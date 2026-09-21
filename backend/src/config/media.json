@@ -1,0 +1,9 @@
+[
+  { "domain": "radioagricultura.cl", "name": "AGRICULTURA ONLINE", "category": "Sitio Web" },
+  { "domain": "biobiochile.cl", "name": "BIO-BIO ONLINE", "category": "Sitio Web" },
+  { "domain": "13.cl", "name": "CANAL 13", "category": "Televisión" },
+  { "domain": "chvnoticias.cl", "name": "CHILEVISIÓN NOTICIAS", "category": "Televisión" },
+  { "domain": "latercera.com", "name": "LA TERCERA", "category": "Prensa Escrita" },
+  { "domain": "emol.com", "name": "EL MERCURIO", "category": "Prensa Escrita" },
+  { "domain": "biobiochile.cl", "name": "RADIO BIO-BIO", "category": "Radio" }
+]
