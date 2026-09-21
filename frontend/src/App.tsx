@@ -24,10 +24,27 @@ export function App() {
   }
 
   return (
-    <main>
-      <DateRangeForm onSubmit={handleSubmit} isLoading={isLoading} />
-      {error && <p role="alert">{error}</p>}
-      {report && <ReportView report={report} />}
-    </main>
+    <>
+      <header className="app-navbar">
+        <span className="app-navbar__brand">UANDES</span>
+        <span className="app-navbar__title">Informe de Prensa</span>
+      </header>
+      <main className="app-main">
+        <div className="app-card">
+          <div className="app-card__header">
+            <h1>Período del informe</h1>
+          </div>
+          <div className="app-card__body">
+            <DateRangeForm onSubmit={handleSubmit} isLoading={isLoading} />
+            {error && (
+              <p className="app-alert" role="alert">
+                {error}
+              </p>
+            )}
+          </div>
+        </div>
+        {report && <ReportView report={report} />}
+      </main>
+    </>
   );
 }

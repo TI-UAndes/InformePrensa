@@ -12,12 +12,13 @@ export function DateRangeForm({
 
   return (
     <form
+      className="date-range-form"
       onSubmit={(event) => {
         event.preventDefault();
         onSubmit(from, to);
       }}
     >
-      <label htmlFor="from-date">
+      <label htmlFor="from-date" className="form-group">
         Desde
         <input
           id="from-date"
@@ -27,7 +28,7 @@ export function DateRangeForm({
           required
         />
       </label>
-      <label htmlFor="to-date">
+      <label htmlFor="to-date" className="form-group">
         Hasta
         <input
           id="to-date"
@@ -37,7 +38,7 @@ export function DateRangeForm({
           required
         />
       </label>
-      <button type="submit" disabled={isLoading}>
+      <button type="submit" className="btn btn-primary" disabled={isLoading}>
         {isLoading ? "Generando..." : "Generar informe"}
       </button>
     </form>

@@ -3,8 +3,10 @@ import { CategorySection } from "./CategorySection";
 
 export function ReportView({ report }: { report: ReportResponse }) {
   return (
-    <div className="report-view">
-      <h1 className="report-view__title">UANDES EN LOS MEDIOS</h1>
+    <div className="app-card report-view">
+      <div className="app-card__header">
+        <h1 className="report-view__title">UANDES EN LOS MEDIOS</h1>
+      </div>
       {report.categories.length === 0 && (
         <p className="report-view__empty">
           No se encontraron menciones de la UANDES en el período seleccionado.
